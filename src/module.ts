@@ -11,21 +11,25 @@ export function getDNSModule(name: string): DNSModule {
 }
 
 const DASH_CHAR = '-'.charCodeAt(0);
+const DOT_CHAR = '.'.charCodeAt(0);
 
 export function cleanupDataAndSplit(data: string): string[] {
     data = data
-        .replace(/[^a-zA-Z0-9-]/g, '-')
+        .replace(/[^a-zA-Z0-9\.\-]/g, '.')
         .toLowerCase()
-        .replace(/--+/g, '-');
+        .replace(/\.\.+/g, '.')
+        .replace(/--+/g, '-')
+        .replace(/\.-/g, '.0-')
+        .replace(/-\./g, '-0.');
 
-    if (data.charCodeAt(0) === DASH_CHAR) {
+    if (data.charCodeAt(0) === DOT_CHAR || data.charCodeAt(0) === DASH_CHAR) {
         data = `0${data}`;
     }
-    if (data.charCodeAt(data.length - 1) === DASH_CHAR) {
+    if (data.charCodeAt(data.length - 1) === DASH_CHAR || data.charCodeAt(data.length - 1) === DOT_CHAR) {
         data = `${data}0`;
     }
 
-    const spls = data.split('-');
+    const spls = data.split('.');
 
     const res = [];
     let curStr = [];
@@ -34,14 +38,14 @@ export function cleanupDataAndSplit(data: string): string[] {
         curStr.push(spl);
         curLen += spl.length;
         if (curLen > 64) {
-            res.push(curStr.join('-'));
+            res.push(curStr.join('.'));
             curStr = [];
             curLen = 0;
         }
     }
 
     if (curLen > 0) {
-        res.push(curStr.join('-'));
+        res.push(curStr.join('.'));
         curStr = [];
         curLen = 0;
     }
