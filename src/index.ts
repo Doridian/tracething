@@ -119,7 +119,6 @@ class TracethingDNSServer extends DNSServer {
         const type = parseInt(spl[15] + spl[14] + spl[13] + spl[12], 16);
         
         const ipset = this.allocatedIPSets[ipsetID];
-        console.log(ipsetID, answerID, type);
 
         if (!ipset) {
             return [];
@@ -141,8 +140,6 @@ class TracethingDNSServer extends DNSServer {
             default:
                 return [];
         }
-
-        console.log(a);
 
         return [a];
     }
