@@ -9,7 +9,7 @@ export interface IPSetData {
 }
 
 class TracethingDNSServer extends DNSServer {
-    private ipsetByName: { [key: string]: IPSetData };
+    private ipsetByName: { [key: string]: IPSetData } = {};
     private allocatedIPSets: IPSetData[] = [];
     private nextIPSet = 0;
 
