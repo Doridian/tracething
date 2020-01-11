@@ -125,8 +125,6 @@ class TracethingDNSServer extends DNSServer {
             return [];
         }
 
-        console.log(ipset, ipset.trace[answerID]);
-
         const a = new DNSAnswer();
         a.class = DNS_CLASS.IN;
         a.type = DNS_TYPE.PTR;
@@ -143,6 +141,8 @@ class TracethingDNSServer extends DNSServer {
             default:
                 return [];
         }
+
+        console.log(a);
 
         return [a];
     }
