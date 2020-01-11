@@ -9,7 +9,7 @@ export interface IPSetData {
 }
 
 class TracethingDNSServer extends DNSServer {
-    private ipsetByName: { [key: string]: IPSetData } = {};
+    private ipsetByName: { [key: string]: DNSAnswer } = {};
     private allocatedIPSets: IPSetData[] = [];
     private nextIPSet = 0;
 
@@ -20,7 +20,6 @@ class TracethingDNSServer extends DNSServer {
         }
 
         const q = packet.questions[0];
-        console.log(q);
         if (q.class !== DNS_CLASS.IN) {
             reply([]);
             return;
@@ -63,6 +62,10 @@ class TracethingDNSServer extends DNSServer {
             return [];
         }
 
+        if (this.ipsetByName[name]) {
+            return [this.ipsetByName[name]];
+        }
+
         const spls = name.split('.');
         spls.pop();
         spls.pop();
@@ -78,14 +81,11 @@ class TracethingDNSServer extends DNSServer {
             trace: await dnsModule.handle(spls),
         };
 
-        console.log(answers);
-
         const id = this.getNextIPSet();
         if (this.allocatedIPSets[id]) {
             delete this.ipsetByName[this.allocatedIPSets[id].name];
         }
         this.allocatedIPSets[id] = answers;
-        this.ipsetByName[name] = answers;
 
         const a = new DNSAnswer();
         a.class = DNS_CLASS.IN;
@@ -93,6 +93,7 @@ class TracethingDNSServer extends DNSServer {
         a.name = name;
         a.ttl = 60;
         a.setData(IPAddress.fromString(`${BASEADDR}${id.toString(16)}`));
+        this.ipsetByName[name] = a;
         return [a];
     }
 
