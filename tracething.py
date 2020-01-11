@@ -27,10 +27,10 @@ def handle_pkt(pkt):
 
     if not dst.startswith(BASEADDR):
         return
- 
-    net = dst[len(BASEADDR):]
 
-    src = pkt[1].src
+    net = dst[len(BASEADDR):]
+    if not net:
+        net = "0"
     hop = pkt[1].hlim
 
     if hop > 30:
