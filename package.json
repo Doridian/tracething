@@ -1,0 +1,32 @@
+{
+  "name": "@doridian/tracething",
+  "description": ":3",
+  "version": "0.0.1",
+  "author": "Doridian <git@doridian.net>",
+  "contributors": [
+    "Mark Dietzer"
+  ],
+  "scripts": {
+    "lint": "tslint -t verbose --project tsconfig.json",
+    "build": "rimraf ./dist && tsc --project .",
+    "start": "npm run build && node dist/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Doridian/node-dnsd.git"
+  },
+  "main": "dist/index.js",
+  "dependencies": {
+    "@doridian/dnsd": "0.0.6",
+    "node-fetch": "^2.6.0"
+  },
+  "devDependencies": {
+    "@types/node": "^13.1.4",
+    "@types/node-fetch": "^2.5.4",
+    "rimraf": "^3.0.0",
+    "ts-node": "^8.5.4",
+    "tslint": "^5.20.1",
+    "typescript": "^3.7.4"
+  },
+  "license": "MIT"
+}
