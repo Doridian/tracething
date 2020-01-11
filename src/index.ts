@@ -98,8 +98,6 @@ class TracethingDNSServer extends DNSServer {
     }
 
     protected async fetchPTR(name: string): Promise<DNSAnswer[]> {
-        console.log(name);
-
         if (!name.endsWith('.ip6.arpa')) {
             return [];
         }
@@ -121,6 +119,8 @@ class TracethingDNSServer extends DNSServer {
         const type = parseInt(spl[15] + spl[14] + spl[13] + spl[12], 16);
         
         const ipset = this.allocatedIPSets[ipsetID];
+        console.log(ipsetID, answerID, type);
+
         if (!ipset) {
             return [];
         }
