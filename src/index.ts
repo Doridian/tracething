@@ -135,7 +135,7 @@ class TracethingDNSServer extends DNSServer {
                 a.setData(ipset.name);
                 break;
             case 2:
-                a.setData(`${ipset.trace[answerID] || "end-of-the-line"}.thing.f0x.es`);
+                a.setData(`${ipset.trace[answerID] || "end-of-the-line"}.0--0.f0x.es`);
                 break;
             default:
                 return [];

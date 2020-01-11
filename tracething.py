@@ -31,7 +31,7 @@ def handle_pkt(pkt):
     net = dst[len(BASEADDR):]
     if not net:
         net = "0"
-    hop = pkt[1].hlim
+    hop = pkt[1].hlim - 1
 
     if hop > 30:
         resp(pkt, mk_pong(pkt))
