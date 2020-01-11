@@ -9,6 +9,7 @@ export interface IPSetData {
 }
 
 class TracethingDNSServer extends DNSServer {
+    private ipsetByName: { [key: string]: IPSetData };
     private allocatedIPSets: IPSetData[] = [];
     private nextIPSet = 0;
 
@@ -67,7 +68,12 @@ class TracethingDNSServer extends DNSServer {
         console.log(answers);
 
         const id = this.getNextIPSet();
+        if (this.allocatedIPSets[id]) {
+            delete this.ipsetByName[this.allocatedIPSets[id].name];
+        }
         this.allocatedIPSets[id] = answers;
+        this.ipsetByName[name] = answers;
+
         const a = new DNSAnswer();
         a.class = DNS_CLASS.IN;
         a.type = DNS_TYPE.AAAA;
