@@ -20,6 +20,7 @@ class TracethingDNSServer extends DNSServer {
         }
 
         const q = packet.questions[0];
+        console.log(q);
         if (q.class !== DNS_CLASS.IN) {
             reply([]);
             return;
