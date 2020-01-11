@@ -42,16 +42,9 @@ class TracethingDNSServer extends DNSServer {
             a1.type = DNS_TYPE.NS;
             a1.name = q.name;
             a1.ttl = 60;
-            a1.setData("ns1.pawnode.com");
+            a1.setData("nsthing.pawnode.com");
 
-            const a2 = new DNSAnswer();
-            a2.class = DNS_CLASS.IN;
-            a2.type = DNS_TYPE.NS;
-            a2.name = q.name;
-            a2.ttl = 60;
-            a2.setData("ns2.pawnode.com");
-
-            reply([a1, a2]);
+            reply([a1]);
             return;
         }
 
@@ -150,5 +143,5 @@ class TracethingDNSServer extends DNSServer {
     }
 }
 
-const server = new TracethingDNSServer(1153);
+const server = new TracethingDNSServer(53, "2a0f:9400:7312::1", "udp6");
 server.listen(() => console.log("Ready"));
