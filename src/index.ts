@@ -1,7 +1,7 @@
 import { DNSPacket, DNSReplyFunc, DNSServer, DNS_CLASS, DNS_RCODE, DNS_TYPE, DNSAnswer, IPAddress } from "@doridian/dnsd";
 import { getDNSModule } from "./module";
 
-const BASEADDR = '2a0f:9400:7312:1337:1::';
+const BASEADDR = '2a0f:9400:7311:1337:1::';
 
 export interface IPSetData {
     name: string;
@@ -145,5 +145,5 @@ class TracethingDNSServer extends DNSServer {
     }
 }
 
-const server = new TracethingDNSServer(53, "2a0f:9400:7312::1", "udp6");
+const server = new TracethingDNSServer(53, "2a0f:9400:7311::1", "udp6");
 server.listen(() => console.log("Ready"));
