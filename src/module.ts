@@ -1,4 +1,4 @@
-import fetch from "node-fetch";
+import fetch from 'node-fetch';
 
 export interface DNSModule {
     handle(name: string[]): Promise<string[]>;
@@ -63,12 +63,23 @@ class GistDNSModule implements DNSModule {
 
 MODULES.gist = new GistDNSModule();
 
+interface WikiResponse {
+    query: {
+        pages: {
+            [key: string ]: {
+                title: string;
+                extract: string;
+            };
+        };
+    };
+}
+
 class WikipediaModule implements DNSModule {
     async handle(name: string[]): Promise<string[]> {
         const resp = await fetch(`https://en.wikipedia.org/w/api.php?action=query&format=json&titles=${name[0]}&prop=extracts&exintro&explaintext`);
-        const rawObj = await resp.json();
+        const rawObj = <WikiResponse>await resp.json();
         const pages = rawObj.query.pages;
-        const page = <any>Object.values(pages)[0];
+        const page = Object.values(pages)[0];
         return cleanupDataAndSplit(page.extract);
     }
 }

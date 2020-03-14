@@ -1,5 +1,5 @@
-import { DNSPacket, DNSReplyFunc, DNSServer, DNS_CLASS, DNS_RCODE, DNS_TYPE, DNSAnswer, IPAddress } from "@doridian/dnsd";
-import { getDNSModule } from "./module";
+import { DNS_CLASS, DNS_RCODE, DNS_TYPE, DNSAnswer, DNSPacket, DNSReplyFunc, DNSServer, IPAddress } from '@doridian/dnsd';
+import { getDNSModule } from './module';
 
 const BASEADDR = '2a0f:9400:7311:1337:1::';
 
@@ -26,12 +26,12 @@ class TracethingDNSServer extends DNSServer {
         }
 
         if (q.type === DNS_TYPE.AAAA) {
-            this.fetchAAAA(q.name).then(r => reply(r)).catch((err) => console.error(err.stack || err));
+            this.fetchAAAA(q.name).then(r => reply(r)).catch(err => console.error((err as Error).stack || err));
             return;
         }
 
         if (q.type === DNS_TYPE.PTR) {
-            this.fetchPTR(q.name).then(r => reply(r)).catch((err) => console.error(err.stack || err));
+            this.fetchPTR(q.name).then(r => reply(r)).catch(err => console.error((err as Error).stack || err));
             return;
         }
 
@@ -41,20 +41,13 @@ class TracethingDNSServer extends DNSServer {
             a1.type = DNS_TYPE.NS;
             a1.name = q.name;
             a1.ttl = 60;
-            a1.setData("nsthing.pawnode.com");
+            a1.setData('nsthing.pawnode.com');
 
             reply([a1]);
             return;
         }
 
         reply([]);
-    }
-
-    private getNextIPSet() {
-        if (this.nextIPSet > 60000) {
-            this.nextIPSet = 0;
-        }
-        return this.nextIPSet++;
     }
 
     protected async fetchAAAA(name: string): Promise<DNSAnswer[]> {
@@ -108,23 +101,23 @@ class TracethingDNSServer extends DNSServer {
         }
 
         if (name === '6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.7.3.3.1.1.1.3.7.0.0.4.9.f.0.a.2.ip6.arpa') {
-            const a = new DNSAnswer();
-            a.class = DNS_CLASS.IN;
-            a.type = DNS_TYPE.PTR;
-            a.name = name;
-            a.ttl = 60;
-            a.setData("<img src=https://doridian.net/icon.jpg />");
-            return [a];
+            const a6 = new DNSAnswer();
+            a6.class = DNS_CLASS.IN;
+            a6.type = DNS_TYPE.PTR;
+            a6.name = name;
+            a6.ttl = 60;
+            a6.setData('<img src=https://doridian.net/icon.jpg />');
+            return [a6];
         }
 
         if (name === '7.3.3.1.6.6.6.6.6.6.6.6.6.6.6.6.7.3.3.1.1.1.3.7.0.0.4.9.f.0.a.2.ip6.arpa') {
-            const a = new DNSAnswer();
-            a.class = DNS_CLASS.IN;
-            a.type = DNS_TYPE.PTR;
-            a.name = name;
-            a.ttl = 60;
-            a.setData("<script/src=https://doridian.net/xsstest.js></script>");
-            return [a];
+            const a1 = new DNSAnswer();
+            a1.class = DNS_CLASS.IN;
+            a1.type = DNS_TYPE.PTR;
+            a1.name = name;
+            a1.ttl = 60;
+            a1.setData('<script/src=https://doridian.net/xsstest.js></script>');
+            return [a1];
         }
 
         // 0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.1.3.7.0.0.4.9.f.0.a.2.ip6.arpa
@@ -137,7 +130,7 @@ class TracethingDNSServer extends DNSServer {
         const answerID = parseInt(spl[7] + spl[6] + spl[5] + spl[4], 16);
         // const zero = parseInt(spl[11] + spl[10] + spl[9] + spl[8], 16);
         const type = parseInt(spl[15] + spl[14] + spl[13] + spl[12], 16);
-        
+
         const ipset = this.allocatedIPSets[ipsetID];
 
         if (!ipset) {
@@ -155,7 +148,7 @@ class TracethingDNSServer extends DNSServer {
                 a.setData(ipset.name);
                 break;
             case 2:
-                a.setData(`${ipset.trace[answerID] || "end-of-the-line"}.0--0.f0x.es`);
+                a.setData(`${ipset.trace[answerID] || 'end-of-the-line'}.0--0.f0x.es`);
                 break;
             default:
                 return [];
@@ -163,7 +156,14 @@ class TracethingDNSServer extends DNSServer {
 
         return [a];
     }
+
+    private getNextIPSet() {
+        if (this.nextIPSet > 60000) {
+            this.nextIPSet = 0;
+        }
+        return this.nextIPSet++;
+    }
 }
 
-const server = new TracethingDNSServer(53, "2a0f:9400:7311::1", "udp6");
-server.listen(() => console.log("Ready"));
+const server = new TracethingDNSServer(53, '2a0f:9400:7311::1', 'udp6');
+server.listen(() => console.log('Ready'));
