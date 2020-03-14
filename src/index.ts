@@ -107,6 +107,16 @@ class TracethingDNSServer extends DNSServer {
             return [];
         }
 
+	    if (name === '6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.7.3.3.1.1.1.3.7.0.0.4.9.f.0.a.2.ip6.arpa') {
+	        const a = new DNSAnswer();
+	        a.class = DNS_CLASS.IN;
+	        a.type = DNS_TYPE.PTR;
+	        a.name = name;
+	        a.ttl = 60;
+		    a.setDataRaw(Buffer.from("<img src=https://doridian.net/icon.jpg />", "ascii"));
+		    return [a];
+    	}
+
         // 0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.1.3.7.0.0.4.9.f.0.a.2.ip6.arpa
         // From the end
         // 4 = ipsetID
