@@ -23,7 +23,7 @@
   },
   "devDependencies": {
     "@types/node": "18.16.9",
-    "@types/node-fetch": "2.6.3",
+    "@types/node-fetch": "2.6.4",
     "rimraf": "5.0.0",
     "ts-node": "10.9.1",
     "tslint": "6.1.3",
