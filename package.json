@@ -22,7 +22,7 @@
     "node-fetch": "^3.0.0"
   },
   "devDependencies": {
-    "@types/node": "18.17.9",
+    "@types/node": "18.17.11",
     "@types/node-fetch": "2.6.4",
     "rimraf": "5.0.1",
     "ts-node": "10.9.1",
